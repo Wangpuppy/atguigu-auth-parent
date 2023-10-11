@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.atguigu</groupId>
-    <artifactId>atguigu-auth</artifactId>
+    <artifactId>guigu-auth-backend</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>

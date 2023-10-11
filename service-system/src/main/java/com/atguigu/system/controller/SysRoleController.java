@@ -2,6 +2,7 @@ package com.atguigu.system.controller;
 
 import com.atguigu.model.system.SysRole;
 import com.atguigu.model.vo.SysRoleQueryVo;
+import com.atguigu.system.exception.GuiguException;
 import com.atguigu.system.result.Result;
 import com.atguigu.system.service.SysRoleService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -44,7 +45,7 @@ public class SysRoleController {
 
     //6 修改-最终修改
     @ApiOperation("最终修改")
-    @PutMapping("update")
+    @PostMapping("update")
     public Result updateRole(@RequestBody SysRole sysRole) {
         boolean isSuccess = sysRoleService.updateById(sysRole);
         if (isSuccess) {
@@ -56,7 +57,7 @@ public class SysRoleController {
 
     //5 修改-根据id查询
     @ApiOperation("根据id查询")
-    @PutMapping("findRoleById/{id}")
+    @PostMapping("findRoleById/{id}")
     public Result findRoleById(@PathVariable("id") Long id) {
         SysRole sysRole = sysRoleService.getById(id);
         return Result.ok(sysRole);
@@ -112,6 +113,13 @@ public class SysRoleController {
     @ApiOperation("查询所有记录")
     @GetMapping("findAll")
     public Result findAllRole() {
+        //TODO 模拟异常效果 ArithmeticException: / by zero
+        try {
+            int i = 9 / 0;
+        }catch (Exception e){
+            //手动抛出异常
+            throw new GuiguException(20001,"执行自定义异常");
+        }
         //调用service
         List<SysRole> list = sysRoleService.list();
         return Result.ok(list);

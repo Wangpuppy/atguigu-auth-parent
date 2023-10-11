@@ -23,7 +23,7 @@ public class IndexController {
 
     //login
     @PostMapping("login")
-    public Result login123() {
+    public Result login() {
         Map<String, Object> map = new HashMap<>();
         map.put("token", "admin-token atguigu");
         return Result.ok(map);
