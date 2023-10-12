@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @Description 用户管理接口
  * @Author wrystart
- * @Version       
+ * @Version
  * @Date 2023/10/12 8:45
  */
 @Api(tags = "用户管理接口")
@@ -26,6 +26,14 @@ public class SysUserController {
 
     @Autowired
     private SysUserService sysUserService;
+
+    //更改用户状态
+    @ApiOperation("更改用户状态")
+    @GetMapping("updateStatus/{id}/{status}")
+    public Result updateStatus(@PathVariable String id, @PathVariable Integer status) {
+        sysUserService.updateStatus(id, status);
+        return Result.ok();
+    }
 
     //用户列表-条件分页查询
     @ApiOperation("用户列表")
@@ -46,9 +54,9 @@ public class SysUserController {
     @PostMapping("save")
     public Result save(@RequestBody SysUser user) {
         boolean isSuccess = sysUserService.save(user);
-        if (isSuccess){
+        if (isSuccess) {
             return Result.ok();
-        }else {
+        } else {
             return Result.fail();
         }
 
@@ -57,7 +65,7 @@ public class SysUserController {
     //根据id查询
     @ApiOperation("根据id查询")
     @GetMapping("getUserById/{id}")
-    public Result getUserById(@PathVariable String id){
+    public Result getUserById(@PathVariable String id) {
         SysUser user = sysUserService.getById(id);
 
         return Result.ok(user);
@@ -66,11 +74,11 @@ public class SysUserController {
     //修改用户
     @ApiOperation("修改用户")
     @PostMapping("update")
-    public Result update(@RequestBody SysUser user){
+    public Result update(@RequestBody SysUser user) {
         boolean isSuccess = sysUserService.updateById(user);
-        if (isSuccess){
+        if (isSuccess) {
             return Result.ok();
-        }else {
+        } else {
             return Result.fail();
         }
     }
@@ -78,17 +86,14 @@ public class SysUserController {
     //删除用户
     @ApiOperation("删除用户")
     @DeleteMapping("remove/{id}")
-    public Result remove(@PathVariable String id){
+    public Result remove(@PathVariable String id) {
         boolean isSuccess = sysUserService.removeById(id);
-        if (isSuccess){
+        if (isSuccess) {
             return Result.ok();
-        }else {
+        } else {
             return Result.fail();
         }
     }
-
-
-
 
 }
 
