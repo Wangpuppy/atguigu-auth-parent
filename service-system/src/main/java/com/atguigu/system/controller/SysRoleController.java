@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @Description 角色管理
+ * @Description 角色管理接口
  * @Author wrystart
  * @Version
  * @Date 2023/10/10 14:57
  */
 
-@Api(tags = "角色管理")
+@Api(tags = "角色管理接口")
 @RestController
 @RequestMapping("/admin/system/sysRole")
 public class SysRoleController {

@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description 用户登录
+ * @Description 用户登录接口
  * @Author wrystart
  * @Version
  * @Date 2023/10/10 16:28
  */
-@Api(tags = "用户登录")
+@Api(tags = "用户登录接口")
 @RestController
 @RequestMapping("/admin/system/index")
 public class IndexController {
