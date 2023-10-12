@@ -57,8 +57,8 @@ public class SysRoleController {
 
     //5 修改-根据id查询
     @ApiOperation("根据id查询")
-    @PostMapping("findRoleById/{id}")
-    public Result findRoleById(@PathVariable("id") Long id) {
+    @GetMapping("findRoleById/{id}")
+    public Result findRoleById(@PathVariable("id") String id) {
         SysRole sysRole = sysRoleService.getById(id);
         return Result.ok(sysRole);
 
