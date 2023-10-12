@@ -1,6 +1,7 @@
 package com.atguigu.system.controller;
 
 import com.atguigu.model.system.SysRole;
+import com.atguigu.model.vo.AssginRoleVo;
 import com.atguigu.model.vo.SysRoleQueryVo;
 import com.atguigu.system.exception.GuiguException;
 import com.atguigu.system.result.Result;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description 角色管理接口
@@ -28,6 +30,24 @@ public class SysRoleController {
 
     @Autowired
     private SysRoleService sysRoleService;
+
+    //获取用户的角色数据
+    @ApiOperation("获取用户的角色数据")
+    @GetMapping("toAssign/{userId}")
+    public Result toAssign(@PathVariable("userId") String userId) {
+        Map<String,Object> roleMap = sysRoleService.getRoleByUserId(userId);
+        return Result.ok(roleMap);
+    }
+
+    //用户分配角色
+    @ApiOperation("用户分配角色")
+    @PostMapping("doAssign")
+    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo) {
+        sysRoleService.doAssign(assginRoleVo);
+        return Result.ok();
+
+    }
+
 
     //7 批量删除
     // 多个id值 [1,2,3]
