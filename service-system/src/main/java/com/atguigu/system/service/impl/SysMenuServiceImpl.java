@@ -1,11 +1,13 @@
 package com.atguigu.system.service.impl;
 
 import com.atguigu.model.system.SysMenu;
+import com.atguigu.system.exception.GuiguException;
 import com.atguigu.system.mapper.SysMenuMapper;
 import com.atguigu.system.service.SysMenuService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import com.atguigu.system.utils.MenuHelper
+import com.atguigu.system.utils.MenuHelper;
 
 import java.util.List;
 
@@ -29,5 +31,22 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         //所有菜单的数据转换要求的数据格式
         List<SysMenu> resultList = MenuHelper.buildTree(sysMenuList);
         return resultList;
+    }
+
+    //删除菜单
+    @Override
+    public void removeMenuById(String id) {
+        //查询当前删除菜单下面是否有子菜单
+        //根据id = parentid
+        QueryWrapper<SysMenu> wrapper = new QueryWrapper<>();
+        wrapper.eq("parent_id", id);
+        Integer count = baseMapper.selectCount(wrapper);
+        if (count>0){//有子菜单
+            throw new GuiguException(201,"请先删除子菜单");
+
+        }
+        //调用删除
+        baseMapper.deleteById(id);
+
     }
 }
