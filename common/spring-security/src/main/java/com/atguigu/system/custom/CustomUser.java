@@ -1,4 +1,4 @@
-package com.atguigu.system.costom;
+package com.atguigu.system.custom;
 
 import com.atguigu.model.system.SysUser;
 import org.springframework.security.core.GrantedAuthority;

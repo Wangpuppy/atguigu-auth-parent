@@ -1,4 +1,4 @@
-package com.atguigu.system.costom;
+package com.atguigu.system.custom;
 
 import com.atguigu.system.utils.MD5;
 import org.springframework.security.crypto.password.PasswordEncoder;
