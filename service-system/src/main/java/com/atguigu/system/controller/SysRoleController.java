@@ -3,6 +3,8 @@ package com.atguigu.system.controller;
 import com.atguigu.model.system.SysRole;
 import com.atguigu.model.vo.AssginRoleVo;
 import com.atguigu.model.vo.SysRoleQueryVo;
+import com.atguigu.system.annotation.Log;
+import com.atguigu.system.enums.BusinessType;
 import com.atguigu.system.exception.GuiguException;
 import com.atguigu.system.result.Result;
 import com.atguigu.system.service.SysRoleService;
@@ -91,6 +93,7 @@ public class SysRoleController {
     //4 添加
     //@RequestBody 不能使用get提交方式
     //传递json格式数据，把json格式数据封装到对象里面 {...}
+    @Log(title = "角色管理",businessType = BusinessType.INSERT)
     @PreAuthorize("hasAuthority('bnt.sysRole.add')")
     @ApiOperation("添加角色")
     @PostMapping("save")

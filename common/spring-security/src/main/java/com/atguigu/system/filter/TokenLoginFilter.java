@@ -5,6 +5,8 @@ import com.atguigu.model.vo.LoginVo;
 import com.atguigu.system.custom.CustomUser;
 import com.atguigu.system.result.Result;
 import com.atguigu.system.result.ResultCodeEnum;
+import com.atguigu.system.service.LoginLogService;
+import com.atguigu.system.utils.IpUtil;
 import com.atguigu.system.utils.JwtHelper;
 import com.atguigu.system.utils.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,13 +36,17 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private RedisTemplate redisTemplate;
 
+
+    private LoginLogService loginLogService;
+
     //构造
-    public TokenLoginFilter(AuthenticationManager authenticationManager, RedisTemplate redisTemplate) {
+    public TokenLoginFilter(AuthenticationManager authenticationManager, RedisTemplate redisTemplate,LoginLogService loginLogService) {
         this.setAuthenticationManager(authenticationManager);
         this.setPostOnly(false);
         //指定登录接口及提交方式，可以指定任意路径
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/admin/system/index/login", "POST"));
         this.redisTemplate = redisTemplate;
+        this.loginLogService = loginLogService;
     }
 
     //获取用户名和密码,认证
@@ -70,6 +76,9 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //生成token
         String token = JwtHelper.createToken(customUser.getSysUser().getId(), customUser.getSysUser().getUsername());
+
+        //记录登录日志
+        loginLogService.recordLoginLog(customUser.getUsername(),1, IpUtil.getIpAddress(request),"登录成功");
 
 
         //返回
