@@ -1,12 +1,14 @@
 package com.atguigu.system.filter;
 
+import com.alibaba.fastjson.JSON;
 import com.atguigu.model.vo.LoginVo;
-import com.atguigu.system.costom.CustomUser;
+import com.atguigu.system.custom.CustomUser;
 import com.atguigu.system.result.Result;
 import com.atguigu.system.result.ResultCodeEnum;
 import com.atguigu.system.utils.JwtHelper;
 import com.atguigu.system.utils.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,12 +32,15 @@ import java.util.Map;
  */
 public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
+    private RedisTemplate redisTemplate;
+
     //构造
-    public TokenLoginFilter(AuthenticationManager authenticationManager) {
+    public TokenLoginFilter(AuthenticationManager authenticationManager, RedisTemplate redisTemplate) {
         this.setAuthenticationManager(authenticationManager);
         this.setPostOnly(false);
         //指定登录接口及提交方式，可以指定任意路径
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/admin/system/index/login", "POST"));
+        this.redisTemplate = redisTemplate;
     }
 
     //获取用户名和密码,认证
@@ -59,8 +64,14 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //获取认证对象
         CustomUser customUser = (CustomUser) auth.getPrincipal();
+
+        //保存权限数据
+        redisTemplate.opsForValue().set(customUser.getUsername(), JSON.toJSONString(customUser.getAuthorities()));
+
         //生成token
         String token = JwtHelper.createToken(customUser.getSysUser().getId(), customUser.getSysUser().getUsername());
+
+
         //返回
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
